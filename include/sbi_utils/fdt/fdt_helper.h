@@ -74,6 +74,9 @@ int fdt_parse_shakti_uart_node(void *fdt, int nodeoffset,
 int fdt_parse_sifive_uart_node(void *fdt, int nodeoffset,
 			       struct platform_uart_data *uart);
 
+int fdt_parse_tubitak_yonca_uart_node(void *fdt, int nodeoffset,
+					struct platform_uart_data *uart);
+
 int fdt_parse_uart_node(void *fdt, int nodeoffset,
 			struct platform_uart_data *uart);
 

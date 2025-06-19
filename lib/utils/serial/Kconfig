@@ -54,6 +54,10 @@ config FDT_SERIAL_XILINX_UARTLITE
 	select SERIAL_XILINX_UARTLITE
 	default n
 
+config FDT_SERIAL_TUBITAK
+	bool "TUBITAK UART FDT driver"
+	select SERIAL_TUBITAK
+	default n
 endif
 
 config SERIAL_CADENCE
@@ -90,6 +94,10 @@ config SERIAL_XILINX_UARTLITE
 
 config SERIAL_SEMIHOSTING
 	bool "Semihosting support"
+	default n
+
+config SERIAL_TUBITAK
+	bool "TUBITAK UART support"
 	default n
 
 endmenu
