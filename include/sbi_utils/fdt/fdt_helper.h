@@ -74,6 +74,12 @@ int fdt_parse_shakti_uart_node(void *fdt, int nodeoffset,
 int fdt_parse_sifive_uart_node(void *fdt, int nodeoffset,
 			       struct platform_uart_data *uart);
 
+int fdt_parse_tubitak_yonca_uart_node(void *fdt, int nodeoffset,
+					struct platform_uart_data *uart);
+
+int fdt_parse_uart8250_node(void *fdt, int nodeoffset,
+			    struct platform_uart_data *uart);
+
 int fdt_parse_uart_node(void *fdt, int nodeoffset,
 			struct platform_uart_data *uart);
 
@@ -98,6 +104,10 @@ struct plic_data;
 int fdt_parse_plic_node(void *fdt, int nodeoffset, struct plic_data *plic);
 
 int fdt_parse_plic(void *fdt, struct plic_data *plic, const char *compat);
+
+int fdt_parse_tubitak_ic_node(void *fdt, int nodeoffset, unsigned long* out_addr,
+                                unsigned long* out_size, unsigned long* out_target_count,
+                                unsigned long* out_source_count);
 
 int fdt_parse_aclint_node(void *fdt, int nodeoffset,
 			  bool for_timer, bool allow_regname,

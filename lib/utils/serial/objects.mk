@@ -37,6 +37,9 @@ libsbiutils-objs-$(CONFIG_FDT_SERIAL_UART8250) += serial/fdt_serial_uart8250.o
 carray-fdt_serial_drivers-$(CONFIG_FDT_SERIAL_XILINX_UARTLITE) += fdt_serial_xlnx_uartlite
 libsbiutils-objs-$(CONFIG_FDT_SERIAL_XILINX_UARTLITE) += serial/fdt_serial_xlnx_uartlite.o
 
+carray-fdt_serial_drivers-$(CONFIG_FDT_SERIAL_TUBITAK) += fdt_serial_tubitak
+libsbiutils-objs-${CONFIG_FDT_SERIAL_TUBITAK} += serial/fdt_serial_tubitak.o
+
 libsbiutils-objs-$(CONFIG_SERIAL_CADENCE) += serial/cadence-uart.o
 libsbiutils-objs-$(CONFIG_SERIAL_GAISLER) += serial/gaisler-uart.o
 libsbiutils-objs-$(CONFIG_SERIAL_RENESAS_SCIF) += serial/renesas_scif.o
@@ -46,3 +49,4 @@ libsbiutils-objs-$(CONFIG_SERIAL_LITEX) += serial/litex-uart.o
 libsbiutils-objs-$(CONFIG_SERIAL_UART8250) += serial/uart8250.o
 libsbiutils-objs-$(CONFIG_SERIAL_XILINX_UARTLITE) += serial/xlnx-uartlite.o
 libsbiutils-objs-$(CONFIG_SERIAL_SEMIHOSTING) += serial/semihosting.o
+libsbiutils-objs-$(CONFIG_SERIAL_TUBITAK) += serial/tubitak-uart.o

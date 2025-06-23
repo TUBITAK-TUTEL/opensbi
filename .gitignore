@@ -16,4 +16,5 @@ install/
 
 # Development friendly files
 tags
+.vscode
 cscope*

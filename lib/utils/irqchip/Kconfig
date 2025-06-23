@@ -24,6 +24,11 @@ config FDT_IRQCHIP_PLIC
 	select IRQCHIP_PLIC
 	default n
 
+config FDT_IRQCHIP_TUBITAK
+	bool "TUBITAK Interrupt Controller FDT driver"
+	select IRQCHIP_TUBITAK
+	default n
+
 endif
 
 config IRQCHIP_APLIC
@@ -36,6 +41,10 @@ config IRQCHIP_IMSIC
 
 config IRQCHIP_PLIC
 	bool "Platform Level Interrupt Controller (PLIC) support"
+	default n
+
+config IRQCHIP_TUBITAK
+	bool "TUBITAK Interrupt Controller support"
 	default n
 
 endmenu

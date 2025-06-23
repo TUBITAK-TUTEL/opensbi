@@ -29,6 +29,13 @@
 
 #define DEFAULT_SIFIVE_UART_FREQ		0
 #define DEFAULT_SIFIVE_UART_BAUD		115200
+#define DEFAULT_SIFIVE_UART_REG_SHIFT		0
+#define DEFAULT_SIFIVE_UART_REG_IO_WIDTH	4
+
+#define DEFAULT_TUBITAK_YONCA_UART_FREQ		0
+#define DEFAULT_TUBITAK_YONCA_UART_BAUD		115200
+
+#define DEFAULT_GAISLER_UART_REG_IO_WIDTH	4
 
 #define DEFAULT_SHAKTI_UART_FREQ		50000000
 #define DEFAULT_SHAKTI_UART_BAUD		115200
@@ -544,6 +551,41 @@ int fdt_parse_shakti_uart_node(void *fdt, int nodeoffset,
 					DEFAULT_SHAKTI_UART_BAUD);
 }
 
+int fdt_parse_tubitak_yonca_uart_node(void *fdt, int nodeoffset,
+			       struct platform_uart_data *uart)
+{
+	int len, rc;
+	const fdt32_t *val;
+	uint64_t reg_addr, reg_size;
+
+	if (nodeoffset < 0 || !uart || !fdt)
+		return SBI_ENODEV;
+
+	rc = fdt_get_node_addr_size(fdt, nodeoffset, 0,
+				    &reg_addr, &reg_size);
+	if (rc < 0 || !reg_addr || !reg_size)
+		return SBI_ENODEV;
+	uart->addr = reg_addr;
+
+	/**
+	 * UART address is mandaotry. clock-frequency and current-speed
+	 * may not be present. Don't return error.
+	 */
+	val = (fdt32_t *)fdt_getprop(fdt, nodeoffset, "clock-frequency", &len);
+	if (len > 0 && val)
+		uart->freq = fdt32_to_cpu(*val);
+	else
+		uart->freq = DEFAULT_TUBITAK_YONCA_UART_FREQ;
+
+	val = (fdt32_t *)fdt_getprop(fdt, nodeoffset, "current-speed", &len);
+	if (len > 0 && val)
+		uart->baud = fdt32_to_cpu(*val);
+	else
+		uart->baud = DEFAULT_TUBITAK_YONCA_UART_BAUD;
+
+	return 0;
+}
+
 int fdt_parse_sifive_uart_node(void *fdt, int nodeoffset,
 			       struct platform_uart_data *uart)
 {
@@ -903,6 +945,36 @@ int fdt_parse_plic(void *fdt, struct plic_data *plic, const char *compat)
 		return nodeoffset;
 
 	return fdt_parse_plic_node(fdt, nodeoffset, plic);
+}
+
+int fdt_parse_tubitak_ic_node(void *fdt, int nodeoffset, unsigned long* out_addr,
+                                unsigned long* out_size, unsigned long* out_target_count,
+                                unsigned long* out_source_count)
+{
+	int len, rc;
+	const fdt32_t *val;
+	uint64_t reg_addr, reg_size;
+
+	if (nodeoffset < 0 || !fdt || !out_addr || !out_size || !out_target_count || !out_source_count)
+		return SBI_ENODEV;
+
+	rc = fdt_get_node_addr_size(fdt, nodeoffset, 0,
+				    &reg_addr, &reg_size);
+	if (rc < 0 || !reg_addr || !reg_size)
+		return SBI_ENODEV;
+
+	*out_addr = reg_addr;
+	*out_size = reg_size;
+
+	val = fdt_getprop(fdt, nodeoffset, "riscv,ndev", &len);
+	if (len > 0)
+		*out_source_count = fdt32_to_cpu(*val);
+
+	val = fdt_getprop(fdt, nodeoffset, "interrupts-extended", &len);
+	if (!val || len < sizeof(fdt32_t))
+        *out_target_count = fdt32_to_cpu(*val);
+
+	return 0;
 }
 
 static int fdt_get_aclint_addr_size_by_name(void *fdt, int nodeoffset,

@@ -19,6 +19,10 @@ libsbiutils-objs-$(CONFIG_FDT_IRQCHIP_IMSIC) += irqchip/fdt_irqchip_imsic.o
 carray-fdt_irqchip_drivers-$(CONFIG_FDT_IRQCHIP_PLIC) += fdt_irqchip_plic
 libsbiutils-objs-$(CONFIG_FDT_IRQCHIP_PLIC) += irqchip/fdt_irqchip_plic.o
 
+carray-fdt_irqchip_drivers-$(CONFIG_FDT_IRQCHIP_TUBITAK) += fdt_irqchip_tubitak
+libsbiutils-objs-$(CONFIG_FDT_IRQCHIP_TUBITAK) += irqchip/fdt_irqchip_tubitak.o
+
 libsbiutils-objs-$(CONFIG_IRQCHIP_APLIC) += irqchip/aplic.o
 libsbiutils-objs-$(CONFIG_IRQCHIP_IMSIC) += irqchip/imsic.o
 libsbiutils-objs-$(CONFIG_IRQCHIP_PLIC) += irqchip/plic.o
+libsbiutils-objs-$(CONFIG_IRQCHIP_TUBITAK) += irqchip/irqchip_tubitak.o

@@ -58,8 +58,9 @@
 	/*
 	 * PMP regions must be to be power-of-2. RX/RW will have separate
 	 * regions, so ensure that the split is power-of-2.
+	 * Add the FW_TEXT_START masked with 0x00ffffffff to accomadate the irregular text_starts
 	 */
-	. = ALIGN(1 << LOG2CEIL((SIZEOF(.rodata) + SIZEOF(.text)
+	. = (FW_TEXT_START & 0x000fffff) + ALIGN(1 << LOG2CEIL((SIZEOF(.rodata) + SIZEOF(.text)
 				+ SIZEOF(.dynsym) + SIZEOF(.rela.dyn))));
 
 	PROVIDE(_fw_rw_start = .);

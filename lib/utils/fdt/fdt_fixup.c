@@ -400,6 +400,45 @@ void fdt_config_fixup(void *fdt)
 	fdt_nop_node(fdt, config_offset);
 }
 
+/*
+ * This function is a quick fix / trial to change the clint driver behaviour in linux
+*/
+void fdt_custom_fixup(void *fdt)
+{
+	int err, device_offset, socs_offset;
+	int clint_offset = -1;
+	int riscv_offset = -1;
+
+	err = fdt_open_into(fdt, fdt, fdt_totalsize(fdt) + 32);
+	if (err < 0)
+		return;
+
+	socs_offset = fdt_path_offset(fdt, "/soc");
+	if (socs_offset < 0)
+		return;
+
+	fdt_for_each_subnode(device_offset, fdt, socs_offset) {
+		err = fdt_node_check_compatible(fdt, device_offset, "riscv,clint0");
+		if (err){
+			//fdt_setprop_string(fdt, device_offset, "status", "disabled");
+			clint_offset = device_offset;
+			continue;
+		}		
+
+		err = fdt_node_check_compatible(fdt, device_offset, "riscv");
+		if (!err){
+			//fdt_setprop_string(fdt, device_offset, "status", "okay");
+			riscv_offset = device_offset;
+			continue;
+		}
+	}
+
+	if (clint_offset != -1  && riscv_offset != -1) {
+		fdt_setprop_string(fdt, clint_offset, "status", "disabled");
+		fdt_setprop_string(fdt, riscv_offset, "status", "okay");
+	}
+}
+
 void fdt_fixups(void *fdt)
 {
 	fdt_aplic_fixup(fdt);
@@ -415,4 +454,6 @@ void fdt_fixups(void *fdt)
 #endif
 
 	fdt_config_fixup(fdt);
+
+	fdt_custom_fixup(fdt);
 }
